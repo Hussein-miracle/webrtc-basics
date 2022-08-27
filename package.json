@@ -1,7 +1,6 @@
 {
   "name": "webrtc-learn",
   "version": "1.0.0",
-  "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -18,5 +17,14 @@
   "dependencies": {
     "express": "^4.18.1",
     "socket.io": "^4.5.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hussein-miracle/webrtc-basics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hussein-miracle/webrtc-basics/issues"
+  },
+  "homepage": "https://github.com/Hussein-miracle/webrtc-basics#readme",
+  "description": ""
 }

@@ -1,9 +1,9 @@
-
 import express from "express";
 import http from "http";
 import {Server} from "socket.io"; 
 const PORT = process.env.PORT || 3000;
-// console.log(process.env , "env")
+let connected = false;
+
 const app = express();    
 const server = http.Server(app);
 let io = new Server(server);
@@ -13,11 +13,14 @@ app.use(express.static("public"));
 
 server.listen(PORT, () => {
   console.log(`Connected on port:${PORT}`);
+  console.log(`The link is:: http://localhost:${PORT}`);
 });
 
   
 io.on("connection",(socket)=>{
-  console.log("a user connected");
+
+  if(connected){
+      console.log("A user connected");
 
 
 
@@ -27,9 +30,9 @@ io.on("connection",(socket)=>{
     
     console.log(io.sockets.adapter.rooms ,"adapter rooms");
 
-    const myRoom = io.sockets.adapter.rooms[roomId] || {length:0};
+    const myRoom = io.sockets.adapter.rooms[roomId] || {size:0};
     
-    const numClients = myRoom.length;
+    const numClients = myRoom.size;
     
     console.log(roomId,"has",numClients,"clients");
 
@@ -37,9 +40,12 @@ io.on("connection",(socket)=>{
       socket.join(roomId);
 
       socket.emit("created", roomId);
-    }else{
+    }else if(numClients === 1){
       socket.join(roomId);
       socket.emit("joined",roomId);
+      
+    }else{
+      socket.emit("full",roomId);
 
     }
     
@@ -67,9 +73,12 @@ io.on("connection",(socket)=>{
   socket.on("answer", event => {
     socket.broadcast.to(event.room).emit("answer",event.sdp);
   })
+  }
 
 
 
+
+  connected = true;
 })
 
 
